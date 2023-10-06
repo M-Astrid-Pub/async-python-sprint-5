@@ -26,7 +26,7 @@ class FilesRepository(RepositoryDB[FileModel, FileCreate, FileUpdate]):
             results = await db.execute(statement=statement)
         return results.all()
 
-    async def check_file_access(self, user_id, file_path):
+    async def check_file_access(self, user_id: int, file_path: str):
         statement = (
             select(
                 self._model,

@@ -1,12 +1,12 @@
 import inject as inject
 from boto3.exceptions import S3UploadFailedError
-from fastapi import (APIRouter, Body, Depends, File, Form, Query, Security,
+from fastapi import (APIRouter, Body, Depends, File, Query, Security,
                      UploadFile)
 from fastapi.responses import ORJSONResponse
 from fastapi_jwt import JwtAuthorizationCredentials
 
 from exceptions import ObjectNotFoundException
-from models.dto.files import FileCreate, FileResponse, MultipleFilesResponse
+from models.dto.files import FileResponse, MultipleFilesResponse
 from services.files_service import FilesService
 from utils.exceptions_handler import ErrorResponse, mapping_to_doc
 from utils.jwt_helper import access_security, credentials_exception

@@ -91,7 +91,7 @@ async def client() -> AsyncGenerator[httpx.AsyncClient, None]:
 
 @pytest.fixture(scope="session")
 async def authed_client(
-    client: httpx.AsyncClient, dummy_user: UserCreate, prepare_db
+    client: httpx.AsyncClient, dummy_user: UserCreate, prepare_db: AsyncGenerator
 ) -> httpx.AsyncClient:
     result = await client.post(
         app.url_path_for("signup"), json=jsonable_encoder(dummy_user)

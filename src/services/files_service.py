@@ -1,5 +1,4 @@
 import os
-from datetime import datetime
 
 from fastapi import UploadFile
 
@@ -14,7 +13,7 @@ class FilesService(BaseService):
         super().__init__(files_repo)
         self.s3 = s3
 
-    async def get_list(self, user_id, limit, offset):
+    async def get_list(self, user_id: int, limit: int, offset: int):
         return await self._repo.get_multi_by_user(
             user_id=user_id, limit=limit, offset=offset
         )
@@ -51,5 +50,5 @@ class FilesService(BaseService):
         os.remove(tmp_local_path)
         return file_obj
 
-    async def check_file_access(self, user_id, file_path):
+    async def check_file_access(self, user_id: int, file_path: str):
         return await self._repo.check_file_access(user_id, file_path)

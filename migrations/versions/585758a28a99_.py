@@ -1,7 +1,7 @@
 """
 
 Revision ID: 585758a28a99
-Revises: 
+Revises:
 Create Date: 2023-10-04 15:56:22.622379
 
 """
