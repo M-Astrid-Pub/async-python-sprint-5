@@ -1,4 +1,6 @@
-
-.idea/
-__pycache__/
-*.pyc
+/.venv/
+/.idea/
+/tmp/
+/.pytest_cache/
+/.mypy_cache/
+/src/.pytest_cache/

@@ -1,0 +1,30 @@
+server {
+    listen 80;
+    server_name example.com;
+
+    location / {
+        try_files $uri $uri/ @backend;
+    }
+
+    location /files/download {
+        try_files $uri @s3;
+    }
+
+    location @backend {
+        proxy_pass http://app:8000;
+    }
+
+    location @s3 {
+        auth_request @s3auth;
+        proxy_pass http://s3.yandexstorage.com;
+        proxy_set_header Host s3.yandexstorage.com;
+        proxy_set_header X-Real-IP $remote_addr;
+    }
+
+    location @s3auth {
+        proxy_pass $uri @backend/check-access
+        proxy_pass_request_body off;
+        proxy_set_header Content-Length "";
+        proxy_set_header X-Original-URI $request_uri;
+    }
+}
