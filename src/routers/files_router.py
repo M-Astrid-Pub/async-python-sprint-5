@@ -4,6 +4,7 @@ from fastapi import (APIRouter, Body, Depends, File, Query, Security,
                      UploadFile)
 from fastapi.responses import ORJSONResponse
 from fastapi_jwt import JwtAuthorizationCredentials
+from starlette import status
 
 from exceptions import ObjectNotFoundException
 from models.dto.files import FileResponse, MultipleFilesResponse
@@ -20,10 +21,10 @@ async def get_files_service() -> FilesService:
 
 exceptions_map = {
     ObjectNotFoundException: ErrorResponse(
-        status_code=404, detail="Not found"
+        status_code=status.HTTP_404_NOT_FOUND, detail="Not found"
     ),
     S3UploadFailedError: ErrorResponse(
-        status_code=400, detail="Upload failed"
+        status_code=status.HTTP_400_BAD_REQUEST, detail="Upload failed"
     ),
 }
 
@@ -44,7 +45,7 @@ async def get_files(
     user_id = credentials.subject["id"]
     files = await service.get_list(user_id=user_id, limit=limit, offset=offset)
     return ORJSONResponse(
-        status_code=200,
+        status_code=status.HTTP_200_OK,
         content=MultipleFilesResponse.from_entity_list(user_id, files),
     )
 
@@ -62,7 +63,7 @@ async def upload_file(
 
     file = await service.upload_file(user_id=user_id, path=path, file=file)
     return ORJSONResponse(
-        status_code=201,
+        status_code=status.HTTP_201_CREATED,
         content=FileResponse.from_entity(file),
     )
 
@@ -77,10 +78,10 @@ async def check_file_access(
 ):
     """Route for nginx auth_request"""
     if not credentials:
-        return ORJSONResponse(status_code=401, content=None)
+        return ORJSONResponse(status_code=status.HTTP_401_UNAUTHORIZED, content=None)
 
     user_id = credentials.subject["id"]
     if not await service.check_file_access(user_id, file_path):
-        return ORJSONResponse(status_code=401, content=None)
+        return ORJSONResponse(status_code=status.HTTP_401_UNAUTHORIZED, content=None)
 
-    return ORJSONResponse(status_code=200, content=None)
+    return ORJSONResponse(status_code=status.HTTP_200_OK, content=None)

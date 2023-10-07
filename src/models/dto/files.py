@@ -1,14 +1,14 @@
 from dataclasses import dataclass
 from datetime import datetime
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class FileCreate(BaseModel):
-    path: str
+    path: str = Field(max_length=256)
     size: int
     is_downloadable: bool
-    name: str
+    name: str = Field(max_length=64)
     user_id: int
 
 

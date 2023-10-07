@@ -1,6 +1,7 @@
 import inject
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi.responses import ORJSONResponse
+from starlette import status
 
 from models.dto.auth import TokenResponse, UserCreate
 from services.user_service import UserService
@@ -24,7 +25,7 @@ async def signup(
         subject=subject,
     )
     return ORJSONResponse(
-        status_code=201,
+        status_code=status.HTTP_201_CREATED,
         content=TokenResponse(access_token=access_token, user_id=user_id),
     )
 
@@ -36,12 +37,12 @@ async def login(
     user_db = await service.get(username=user.username)
 
     if not verify_password(user.password, user_db.hashed_password):
-        raise HTTPException(status_code=401, detail="Bad username or password")
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Bad username or password")
 
     access_token = access_security.create_access_token(
         subject={"id": user_db.id, "username": user_db.username}
     )
     return ORJSONResponse(
-        status_code=201,
+        status_code=status.HTTP_200_OK,
         content=TokenResponse(access_token=access_token, user_id=user_db.id),
     )

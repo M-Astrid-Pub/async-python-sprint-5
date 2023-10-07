@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 from infrastructure.db.db_models import User as UserDB
 from utils.password_checker import pwd_context
@@ -8,7 +8,7 @@ from utils.password_checker import pwd_context
 
 class UserCreate(BaseModel):
     username: str
-    password: str
+    password: str = Field(max_length=55)
 
     @property
     def hashed_password(self) -> str:

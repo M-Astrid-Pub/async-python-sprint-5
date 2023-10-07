@@ -2,6 +2,7 @@ from ipaddress import ip_network
 
 from fastapi import FastAPI, Request
 from fastapi.responses import PlainTextResponse
+from starlette import status
 from starlette.middleware.base import BaseHTTPMiddleware
 
 
@@ -15,7 +16,7 @@ class BlacklistMiddleware(BaseHTTPMiddleware):
         client_ip = request.client.host
 
         if ip_network(client_ip) in self.blacklist:
-            return PlainTextResponse("Access denied", status_code=403)
+            return PlainTextResponse("Access denied", status_code=status.HTTP_403_FORBIDDEN)
 
         response = await call_next(request)
         return response
