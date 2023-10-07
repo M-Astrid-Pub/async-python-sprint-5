@@ -19,6 +19,10 @@ class Settings(BaseSettings):
     AUTHJWT_SECRET_KEY: str
     AUTHJWT_ACCESS_TOKEN_EXPIRES: timedelta = timedelta(hours=12)
 
+    AWS_ACCESS_KEY_ID: str
+    AWS_SECRET_ACCESS_KEY: str
+    AWS_DEFAULT_REGION: str
+
     class Config:
         env_file = ".env"
 

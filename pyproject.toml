@@ -39,10 +39,10 @@ sqlalchemy-utils = "^0.41.1"
 toml-sort = "^0.23.1"
 inject = "^5.0.0"
 passlib = {extras = ["bcrypt"], version = "^1.7.4"}
-boto3 = "^1.28.57"
 pydantic-settings = "^2.0.3"
 fastapi-jwt = "^0.1.12"
 python-multipart = "^0.0.6"
+aioboto3 = "^11.3.0"
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
